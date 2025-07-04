@@ -17,7 +17,8 @@ public class Main {
 
     public static void main(String[] args) {
         // Create perishable products with expiry dates and weights
-        Product cheese = new PerishableProduct("Cheese", 100, 10, LocalDate.of(2025, 7, 5), 0.4);
+        // (name, price, quantity, expiry date, weight (kg))
+        Product cheese = new PerishableProduct("Cheese", 100, 10, LocalDate.of(2025, 7, 5), 0.2);
         Product biscuits = new PerishableProduct("Biscuits", 150, 5, LocalDate.of(2025, 7, 10), 0.7);
         // Create a non-perishable product that requires shipping.
         Product tv = new NonPerishableProduct("TV", 5000, 2, true, 10);

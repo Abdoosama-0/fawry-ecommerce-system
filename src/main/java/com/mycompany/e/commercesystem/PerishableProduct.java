@@ -14,6 +14,7 @@ import java.time.LocalDate;
  * Represents a perishable product (e.g., Cheese, Biscuits)
  * that has an expiry date and requires shipping (i.e., has weight).
  */
+// Perishable products (e.g., Cheese, Biscuits) must always be shipped, so this class implements Shippable
 public class PerishableProduct extends Product implements Shippable {
     // Expiry date of the product
     private LocalDate expiryDate;

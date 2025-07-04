@@ -23,7 +23,7 @@ public class CheckoutService {
             throw new IllegalStateException("Cart is empty.");
         }
 
-        List<Shippable> toShip = new ArrayList<>();// List of items to be shipped
+        List<ShippableItem> toShip = new ArrayList<>();// List of items to be shipped
         double subtotal = 0; // Total cost of items before shipping
         // Iterate through each item in the cart
         for (CartItem item : cart.getItems()) {
@@ -40,20 +40,24 @@ public class CheckoutService {
             p.reduceQuantity(item.getQuantity());
             // Add to subtotal
             subtotal += item.getTotalPrice();
-            // Handle shippable products
+            // Directly add shippable product to the shipping list with its quantity
             if (p instanceof Shippable) {
-                toShip.add((Shippable) p);
+                toShip.add(new ShippableItem((Shippable) p, item.getQuantity()));
+
             } 
              // Special handling for non-perishable products that are shippable
             else if (p instanceof NonPerishableProduct) {
                 NonPerishableProduct np = (NonPerishableProduct) p;
                 
                 if (np.isShippable()) {
-                     // Wrap as anonymous Shippable implementation
-                    toShip.add(new Shippable() {
+                     // Wrap non-shippable product as Shippable and add with quantity to shipping list
+                     toShip.add(new ShippableItem(new Shippable() {
                         public String getName() { return np.getName(); }
                         public double getWeight() { return np.getWeight(); }
-                    });
+                     }, item.getQuantity()));
+
+
+                 
                 }
             }
         }
