@@ -10,35 +10,46 @@ package com.mycompany.e.commercesystem;
  */
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Handles the checkout process for a customer.
+ * Validates cart items, calculates totals, checks balance,
+ * and triggers shipping and receipt printing.
+ */
 public class CheckoutService {
+    //Performs checkout for the given customer and their cart.
     public void checkout(Customer customer, Cart cart) {
+         // If the cart is empty, stop the process
         if (cart.isEmpty()) {
             throw new IllegalStateException("Cart is empty.");
         }
 
-        List<Shippable> toShip = new ArrayList<>();
-        double subtotal = 0;
-
+        List<Shippable> toShip = new ArrayList<>();// List of items to be shipped
+        double subtotal = 0; // Total cost of items before shipping
+        // Iterate through each item in the cart
         for (CartItem item : cart.getItems()) {
             Product p = item.getProduct();
-
+            // Validate: Product is not expired
             if (p.isExpired()) {
                 throw new IllegalStateException(p.getName() + " is expired.");
             }
-
+            // Validate: Quantity requested is available
             if (item.getQuantity() > p.getQuantity()) {
                 throw new IllegalStateException(p.getName() + " out of stock.");
             }
-
+            // Reduce stock quantity from product
             p.reduceQuantity(item.getQuantity());
+            // Add to subtotal
             subtotal += item.getTotalPrice();
-
+            // Handle shippable products
             if (p instanceof Shippable) {
                 toShip.add((Shippable) p);
-            } else if (p instanceof NonPerishableProduct) {
+            } 
+             // Special handling for non-perishable products that are shippable
+            else if (p instanceof NonPerishableProduct) {
                 NonPerishableProduct np = (NonPerishableProduct) p;
+                
                 if (np.isShippable()) {
+                     // Wrap as anonymous Shippable implementation
                     toShip.add(new Shippable() {
                         public String getName() { return np.getName(); }
                         public double getWeight() { return np.getWeight(); }
@@ -46,23 +57,26 @@ public class CheckoutService {
                 }
             }
         }
-
+        // Determine shipping cost
         double shipping = toShip.isEmpty() ? 0 : 30;
+        // Final total = subtotal + shipping
         double total = subtotal + shipping;
-
+        // Validate: Customer has enough balance
         if (customer.getBalance() < total) {
             throw new IllegalStateException("Insufficient balance.");
         }
-
+        // Deduct total amount from customer's balance
         customer.deduct(total);
-
+        // Ship the items if any exist
         if (!toShip.isEmpty()) {
             new ShippingService().ship(toShip);
         }
 
-        // Print receipt
+        // Print the checkout receipt
         System.out.println("** Checkout receipt **");
+        // Loop through each item in the cart and print its details
         for (CartItem item : cart.getItems()) {
+             // Format: "[quantity]x [product name]    [total price]"
             System.out.printf("%dx %s\t\t%.0f\n", item.getQuantity(), item.getProduct().getName(), item.getTotalPrice());
         }
         System.out.println("----------------------");
