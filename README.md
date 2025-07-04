@@ -1,8 +1,14 @@
 # 🛒 Fawry Quantum Internship Challenge – E-Commerce System
 
 A simple Object-Oriented Java project that simulates an e-commerce system supporting perishable and non-perishable products, shipping logic, cart management, and checkout process, built as part of the Fawry Rise Internship Challenge.
+## 📥 Input Example
 
-![Checkout Receipt Sample](https://i.postimg.cc/1tz6R9HX/Screenshot-2025-07-04-020005.png)
+![input](https://i.postimg.cc/zf9qj8yc/Screenshot-2025-07-04-095932.png)
+
+## 📤 Output Example
+
+![output](https://i.postimg.cc/wj2t0yzb/Screenshot-2025-07-04-095454.png)
+
 
 ---
 
