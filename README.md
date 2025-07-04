@@ -2,6 +2,8 @@
 
 A simple Object-Oriented Java project that simulates an e-commerce system supporting perishable and non-perishable products, shipping logic, cart management, and checkout process, built as part of the Fawry Rise Internship Challenge.
 
+![Checkout Receipt Sample](https://i.postimg.cc/1tz6R9HX/Screenshot-2025-07-04-020005.png)
+
 ---
 
 ## 📦 Features
